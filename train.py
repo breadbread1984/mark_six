@@ -29,7 +29,7 @@ def main(unused_argv):
     # 计算所有采样观测数据的似然log概率总和
     log_prob = 0.
     for draw in samples:
-      draw = tf.convert_to_tensor(draw)
+      draw = tf.convert_to_tensor(draw, dtype = tf.int32)
       # draw.shape = (7, )
       # draw是7个数字，索引从1~49转为0~48
       indices = draw - 1
