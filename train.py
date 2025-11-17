@@ -70,7 +70,10 @@ def main(unused_argv):
     return samples, kernel_results
 
   samples, results = run_chain()
-  np.save('params.npy', samples.numpy())
+  log_probs = [target_log_prob_fn(tf.convert_to_tensor(sample)) for sample in samples.numpy()]
+  max_idx = tf.argmax(log_probs)
+  map_estimate = samples.numpy()[max_idx]
+  np.save('params.npy', map_estimate)
 
 if __name__ == "__main__":
   add_options()
