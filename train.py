@@ -12,6 +12,8 @@ FLAGS = flags.FLAGS
 
 def add_options():
   flags.DEFINE_string('input', default = None, help = 'path to input xlsx')
+  flags.DEFINE_integer('num_results', default = 1000, help = 'number of results')
+  flags.DEFINE_integer('num_burnin_steps', default = 500, help = 'number of burnin steps')
 
 def main(unused_argv):
   df = pd.read_excel(FLAGS.input)
@@ -44,10 +46,7 @@ def main(unused_argv):
     log_lik = log_likelihood(theta)
     return log_prior + log_lik
 
-  num_results = 1000
-  num_burnin_steps = 500
-
-  initial_state = tf.ones(num_balls) / 49
+  initial_state = tf.ones(num_balls)
 
   kernel = tfp.mcmc.HamiltonianMonteCarlo(
     target_log_prob_fn=target_log_prob_fn,
@@ -63,10 +62,10 @@ def main(unused_argv):
   @tf.function
   def run_chain():
     samples, kernel_results = tfp.mcmc.sample_chain(
-      num_results=num_results,
-      current_state=tf.zeros(num_balls),
-      kernel=transformed_kernel,
-      num_burnin_steps=num_burnin_steps
+      num_results = FLAGS.num_results,
+      current_state = initial_state,
+      kernel = transformed_kernel,
+      num_burnin_steps = FLAGS.num_burnin_steps
     )
     return samples, kernel_results
 
