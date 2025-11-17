@@ -47,7 +47,7 @@ def main(unused_argv):
   num_results = 1000
   num_burnin_steps = 500
 
-  initial_state = tf.zeros(num_balls)
+  initial_state = tf.ones(num_balls) / 49
 
   kernel = tfp.mcmc.HamiltonianMonteCarlo(
     target_log_prob_fn=target_log_prob_fn,
