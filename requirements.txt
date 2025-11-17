@@ -1,0 +1,6 @@
+tensorflow
+tensorflow_probability
+tf_keras
+pandas
+numpy
+openpyxl
