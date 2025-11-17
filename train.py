@@ -59,7 +59,7 @@ def main(unused_argv):
   transformed_kernel = tfp.mcmc.TransformedTransitionKernel(
     inner_kernel=kernel,
     bijector=tfb.SoftmaxCentered()
- )
+  )
 
   @tf.function
   def run_chain():
