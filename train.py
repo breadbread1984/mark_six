@@ -14,12 +14,14 @@ def add_options():
   flags.DEFINE_string('input', default = None, help = 'path to input xlsx')
   flags.DEFINE_integer('num_results', default = 1000, help = 'number of results')
   flags.DEFINE_integer('num_burnin_steps', default = 500, help = 'number of burnin steps')
+  flags.DEFINE_boolean('with_special', default = False, help = 'with special number')
 
 def main(unused_argv):
   df = pd.read_excel(FLAGS.input)
   samples = df[['中獎號碼 1','2','3','4','5','6','特別號碼']].to_numpy() # samples.shape = (num_samples, 7)
+  if not FLAGS.with_special:
+    samples = samples[:, :-1] # samples.shape = (num_samples, 6)
   num_balls = 49
-  sample_size = 7
 
   # 设置参数先验，Dirichlet分布保证theta在概率单纯形上
   alpha = tf.ones(num_balls, dtype=tf.float32)  # 可调整先验强度
